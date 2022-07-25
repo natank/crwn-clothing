@@ -14,6 +14,7 @@ const Button = ({
   children: string;
   buttonType?: BUTTON_TYPES_CLASSES;
   type: 'button' | 'submit' | 'reset' | undefined;
+  onClick?: () => void;
 }) => {
   return (
     <button

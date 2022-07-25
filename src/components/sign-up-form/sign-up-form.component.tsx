@@ -19,6 +19,10 @@ const SignUpForm = () => {
   const { displayName, email, password, confirmPassword } =
     formFields;
 
+  const resetFormFields = () => {
+    setFormFields(defaultFormFields);
+  };
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (password !== confirmPassword) {
@@ -27,6 +31,7 @@ const SignUpForm = () => {
     }
 
     try {
+      resetFormFields();
       const response =
         await createAuthUserWithEmailAndPassword(
           email,
@@ -50,7 +55,7 @@ const SignUpForm = () => {
 
   return (
     <div className="sign-up-container">
-      <h2>Don't hav an account?</h2>
+      <h2>Don't have an account?</h2>
       <span>Sign up with your email and password</span>
       <form onSubmit={handleSubmit}>
         <FormInput
