@@ -1,13 +1,16 @@
 import React from 'react';
-import { render } from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import './index.scss';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 
-const rootElement = document.getElementById('root') as HTMLElement;
-render(
+const { createRoot } = ReactDOM;
+const rootElement = document.getElementById(
+  'root'
+) as HTMLElement;
+const root = createRoot(rootElement);
+root.render(
   <BrowserRouter>
     <App />
-  </BrowserRouter>,
-  rootElement
+  </BrowserRouter>
 );
