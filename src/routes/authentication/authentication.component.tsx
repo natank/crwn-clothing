@@ -16,9 +16,6 @@ const Authentication = () => {
 
   return (
     <div className="authentication-container">
-      {/* <button onClick={logGoogleUser}>
-        Sign in with Google Popup
-      </button> */}
       <SignInForm />
       <SignUpForm />
     </div>
