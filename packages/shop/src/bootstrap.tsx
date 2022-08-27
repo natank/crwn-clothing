@@ -1,26 +1,33 @@
+import ReactDOM from 'react-dom/client';
 import React from 'react';
-import ReactDOM from 'react-dom';
 import App from './App';
-import { createMemoryHistory } from 'history';
-const mount: (
-  arg0: Element,
-  arg1?: { onNavigate: () => {} }
-) => { onParentNavigate: () => void } = (el, options) => {
+import { createBrowserHistory, BrowserHistory } from 'history';
+import { matchPath } from 'react-router-dom';
+
+let root: ReactDOM.Root;
+
+function mount(el: Element, pathname: string, options?: { onNavigate: () => ()=> void }) {
+  const history: BrowserHistory = createBrowserHistory();
+  function onParentNavigate({ pathname: nextPathname }: { pathname: string }) {
+    console.log(`parent navigated from ${pathname} to ${nextPathname}`)
+    history.push(nextPathname);
+  }
   const onNavigate = options?.onNavigate;
-  const history = createMemoryHistory();
   onNavigate && history.listen(onNavigate);
-  ReactDOM.render(<App history={history} />, el);
+  root = root || ReactDOM.createRoot(el);
+  root.render(<App history={history} />);
 
   return {
-    onParentNavigate() {
-      console.log(`container just navigateds`);
-    }
+    onParentNavigate
   };
 };
+
+
 if (process.env.NODE_ENV === 'development') {
   const devRoot = document.querySelector('#_shop-dev-root');
+
   if (devRoot) {
-    mount(devRoot);
+    mount(devRoot );
   }
 }
 

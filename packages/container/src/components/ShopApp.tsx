@@ -1,31 +1,32 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import {
   useNavigate,
   useLocation,
-  matchPath
+  matchPath,
+  Location,
 } from 'react-router-dom';
 // @ts-ignore
 import mount from 'shop/ShopApp';
 
-const ShopApp = () => {
+function ShopApp ()  {
+  const location = useLocation()
+  console.log(`in shopp app location = ${JSON.stringify(location)}`)
   const ref = useRef(null);
-  const location = useLocation();
   const { pathname } = location;
   const navigate = useNavigate();
-  let onParentNavigate: () => void | undefined;
+  let onParentNavigate: (location: Location) => void | undefined;
   useEffect(() => {
-    const shopProps = mount(ref.current, {
-      onNavigate: ({
-        pathname: nextPathname
-      }: {
-        pathname: string;
+    const shopProps = mount(pathname, ref.current, {
+      onNavigate: (props: {
+        location: { pathname: string };
       }) => {
-        if (!matchPath(pathname, nextPathname))
-          navigate(nextPathname);
+        console.log(`onNavigate pathname=${pathname} nextPathName=${props.location.pathname}`)
+        const nextPathname = props.location.pathname;
+        navigate(nextPathname);
       }
     });
     onParentNavigate = shopProps.onParentNavigate;
-    onParentNavigate();
+    onParentNavigate(location);
   }, [location]);
   return <div ref={ref} />;
 };

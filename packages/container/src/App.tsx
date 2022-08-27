@@ -7,17 +7,13 @@ import React, {
 import {
   Route,
   Routes,
-  Router,
-  BrowserRouter
+  BrowserRouter as Router,
 } from 'react-router-dom';
 import {
   StylesProvider,
   createGenerateClassName
 } from '@material-ui/core/styles';
-import {
-  BrowserHistory,
-  createBrowserHistory
-} from 'history';
+
 import ShopApp from './components/ShopApp';
 import Navigation from './components/Navigation/navigation.component';
 
@@ -27,10 +23,12 @@ const generateClassName = createGenerateClassName({
 
 function App() {
   return (
-    <Router history={createBrowserHistory()}>
+    <Router>
       <StylesProvider>
         <Navigation />
-        <ShopApp />
+        <Routes>
+          <Route path='/*' element={<ShopApp />} />
+        </Routes>
       </StylesProvider>
     </Router>
   );
