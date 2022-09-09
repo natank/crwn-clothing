@@ -15,6 +15,8 @@ import {
 } from '@material-ui/core/styles';
 
 import ShopApp from './components/ShopApp';
+import HomeApp from './components/HomeApp';
+import AuthenticationApp from './components/AuthenticationApp';
 import Navigation from './components/Navigation/navigation.component';
 
 const generateClassName = createGenerateClassName({
@@ -24,12 +26,13 @@ const generateClassName = createGenerateClassName({
 function App() {
   return (
     <Router>
-      <StylesProvider>
-        <Navigation />
-        <Routes>
-          <Route path='/*' element={<ShopApp />} />
-        </Routes>
-      </StylesProvider>
+      <Routes>
+        <Route path="/" element={<Navigation />}>
+          <Route index element={<HomeApp />} />
+          <Route path="shop" element={<ShopApp />} />
+          <Route path="auth" element={<AuthenticationApp />} />
+        </Route>
+    </Routes>
     </Router>
   );
 }

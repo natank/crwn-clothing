@@ -1,0 +1,14 @@
+{
+  "name": "shared",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "firebase": "^9.9.3"
+  },
+  "devDependencies": {
+    "typescript": "^4.8.2"
+  }
+}

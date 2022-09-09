@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import { createAuthUserWithEmailAndPassword } from '../../utils/firebase/firebase.utils';
+import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from '../../utils/firebase/firebase.utils';
 import FormInput from '../form-input/form-input.component';
-import Button, {
-  BUTTON_TYPES_CLASSES
-} from '../button/button.component';
+import Button from '../button/button.component';
 import './sign-up-form.styles.scss';
 
 const defaultFormFields = {
@@ -12,7 +10,7 @@ const defaultFormFields = {
   password: '',
   confirmPassword: ''
 };
-const SignUpForm = () => {
+function SignUpForm() {
   const [formFields, setFormFields] = useState(
     defaultFormFields
   );
@@ -32,12 +30,14 @@ const SignUpForm = () => {
 
     try {
       resetFormFields();
-      const response =
-        await createAuthUserWithEmailAndPassword(
-          email,
-          password
-        );
-      console.log(response);
+      const userCredential = await createAuthUserWithEmailAndPassword(
+        email,
+        password
+      );
+
+      const { user } = userCredential || {user: null};
+
+      user && await createUserDocumentFromAuth(user)
     } catch (error) {
       console.log(
         `user creation encountered an error, ${JSON.stringify(

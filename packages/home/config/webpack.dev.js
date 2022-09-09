@@ -7,21 +7,21 @@ const packageJson = require('../package.json');
 const devConfig = {
 	mode: 'development',
 	output: {
-		publicPath: 'http://localhost:8081/',
+		publicPath: 'http://localhost:8082/',
 		filename: 'bundle.js',
 		path: path.resolve(__dirname, 'dist'),
 
 	},
 	devServer: {
-		port: 8081,
+		port: 8082,
 		historyApiFallback: true,
 	},
 	plugins: [
 		new ModuleFederationPlugin({
-			name: 'shop',
+			name: 'home',
 			filename: 'remoteEntry.js',
 			exposes: {
-				'./ShopApp': './src/bootstrap'
+				'./HomeApp': './src/bootstrap'
 			},
 			shared: packageJson.dependencies
 		}),

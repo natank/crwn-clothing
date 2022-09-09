@@ -7,7 +7,10 @@ import {
   UserCredential,
   User,
   createUserWithEmailAndPassword,
-  signInWithEmailAndPassword
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+  NextOrObserver
 } from 'firebase/auth';
 import {
   getFirestore,
@@ -15,7 +18,6 @@ import {
   getDoc,
   setDoc
 } from 'firebase/firestore';
-import { ErrorInfo } from 'react';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBN9CrDBE3TpT0Toir6MXexz5hY0ZXmuZg',
@@ -88,9 +90,13 @@ export const signInAuthUserWithEmailAndPassword = async (
   password: string
 ) => {
   if (!email || !password) return;
-  return signInWithEmailAndPassword(
-    auth,
-    email,
-    password
-  );
+  return signInWithEmailAndPassword(auth, email, password);
 };
+
+export async function signOutUser() {
+  signOut(auth);
+}
+
+export const onAuthStateChangedListener = (
+  callback: NextOrObserver<User>
+) => onAuthStateChanged(auth, callback);

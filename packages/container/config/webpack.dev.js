@@ -29,6 +29,8 @@ const devConfig = {
 			name: 'container',
 			remotes: {
 				shop: 'shop@http://localhost:8081/remoteEntry.js',
+				home: 'home@http://localhost:8082/remoteEntry.js',
+				authentication: 'auth@http://localhost:8083/remoteEntry.js'
 			},
 			shared: packageJson.dependencies,
 		}),
