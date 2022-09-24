@@ -1,5 +1,5 @@
 import { NextFn, User } from 'firebase/auth';
-import React, { createContext, useState,  useEffect} from 'react'
+import  { createContext, useState,  useEffect} from 'react'
 import { createUserDocumentFromAuth, onAuthStateChangedListener } from '../utils/firebase/firebase.utils';
 
 // as the actual value you want to access

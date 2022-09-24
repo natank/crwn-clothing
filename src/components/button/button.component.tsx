@@ -1,10 +1,6 @@
 import './button.styles.scss';
-import { ReactNode } from 'react';
 
-export enum BUTTON_TYPES_CLASSES {
-  google = 'google-sign-in',
-  inverted = 'inverted'
-}
+export type BUTTON_TYPES_CLASSES = 'inverted' | 'google-sign-in';
 
 const Button = ({
   children,
