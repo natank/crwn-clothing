@@ -1,4 +1,4 @@
-import { createContext, Dispatch, ReactNode, SetStateAction, useEffect, useState } from "react";
+import { createContext, ReactNode, useEffect, useState } from "react";
 
 const initialCartContext = {
   cartItems: [],
@@ -28,7 +28,6 @@ function addCartItem(cartItems: CART_ITEM_TYPE[], productToAdd: PRODUCT_TYPE) {
 } 
 
 function removeCartItem(cartItems: CART_ITEM_TYPE[], productId: number){
-  console.log('deleting', productId)
   return cartItems.filter((cartItem) => cartItem.id !== productId)
 }
 
@@ -40,10 +39,11 @@ function incrementProduct(cartItems: CART_ITEM_TYPE[], productId: number) {
 }
 
 function decrementProduct(cartItems: CART_ITEM_TYPE[], productId: number) {
-  return cartItems.map((item) => {
+  return cartItems.reduce((acc: CART_ITEM_TYPE[], item: CART_ITEM_TYPE) => {
     item.id === productId && item.quantity--;
-    return item;
-  })
+    if(item.quantity > 0) return [...acc, item];
+    return acc;
+  }, [])
 }
 export function CartContextProvider({children}: {children: ReactNode}) {
   const [isCartOpen, setIsCartOpen] = useState(false);
