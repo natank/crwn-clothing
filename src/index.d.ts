@@ -1,3 +1,8 @@
+interface CATEGORY_TYPE {
+  title: string;
+  items: PRODUCT_TYPE[];
+}
+
 type PRODUCT_TYPE = {
   id: number;
   name: string;
@@ -7,8 +12,8 @@ type PRODUCT_TYPE = {
 
 type CART_ITEM_TYPE = PRODUCT_TYPE & { quantity: number };
 
-type PRODUCT_CONTEXT_TYPE = {
-  products: PRODUCT_TYPE[];
+type CATEGORIES_CONTEXT_TYPE = {
+  categoriesMap: Record<string, PRODUCT_TYPE[]>;
 };
 
 type CART_CONTEXT_TYPE = {
