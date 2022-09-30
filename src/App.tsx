@@ -5,7 +5,6 @@ import Checkout from './routes/checkout/checkout.component';
 import Home from './routes/home/home.component';
 import Shop from './routes/shop/shop.component';
 import Category from './routes/category/category.component'
-import './categories.styles.scss';
 
 import './App.scss';
 
