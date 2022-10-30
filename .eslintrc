@@ -11,5 +11,6 @@
   "rules": {
     "@typescript-eslint/ban-ts-comment": "off",
     "no-var-requires": "off"
-  }
+  },
+  "ignorePatterns": ["/node_modules/**", "/build/**"]
 }

@@ -1,12 +1,22 @@
-import { useContext } from 'react';
-import { CartContext } from '../../context/cart.context';
-import { CartIconContainer, ShoppingIcon, ItemCount} from './cart-icon.styles'
+import { useSelector } from 'react-redux';
+import { selectCartItemsCount } from '../../store/cart/cart.selector';
 
-export default function CartIcon({onCartClick}:{onCartClick: React.MouseEventHandler<HTMLDivElement>}) {
-  const { cartItemsCount } = useContext(CartContext);
+import {
+  CartIconContainer,
+  ShoppingIcon,
+  ItemCount
+} from './cart-icon.styles';
+
+export default function CartIcon({
+  onCartClick
+}: {
+  onCartClick: React.MouseEventHandler<HTMLDivElement>;
+}) {
+  const cartItemsCount = useSelector(selectCartItemsCount);
   return (
     <CartIconContainer onClick={onCartClick}>
       <ShoppingIcon />
       <ItemCount>{cartItemsCount}</ItemCount>
-    </CartIconContainer>)
+    </CartIconContainer>
+  );
 }

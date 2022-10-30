@@ -1,28 +1,41 @@
+// @ts-nocheck
 import { Link, Outlet } from 'react-router-dom';
-import { ProductsContainer } from './shop.styles'
-import { Fragment, useContext } from 'react';
-import { CategoriesContext } from '../../context/categories.context';
+import { useSelector } from 'react-redux';
+import {
+  selectCategoriesMap,
+  selectIsCategoriesAreLoading
+} from '../../store/categories/categories.selector';
+import { ProductsContainer } from './shop.styles';
+import { Fragment } from 'react';
 import ProductCard from '../../components/product-card/product-card.component';
-
+import Spinner from '../../components/spinner/spinner.component';
 export default function Shop() {
-  const { categoriesMap } = useContext(CategoriesContext);
+  const loading = useSelector(selectIsCategoriesAreLoading);
+  const categories = useSelector(selectCategoriesMap);
   return (
     <>
-      {
-        Object.keys(categoriesMap).map(title  => (
+      {loading ? (
+        <Spinner />
+      ) : (
+        Object.keys(categories).map((title) => (
           <Fragment key={title}>
-              <h2>
-                <Link to={title}>{title}</Link>
-              </h2>
+            <h2>
+              <Link to={title}>{title}</Link>
+            </h2>
             <ProductsContainer>
-              {categoriesMap[title].slice(0,4).map((product)=>(
-                <ProductCard key={product.id} product={product} />
-              ))}
+              {categories[title]
+                .slice(0, 4)
+                .map((product) => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                  />
+                ))}
             </ProductsContainer>
           </Fragment>
         ))
-      }
+      )}
       <Outlet />
     </>
-  )
+  );
 }

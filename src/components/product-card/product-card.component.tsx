@@ -1,23 +1,39 @@
-import { useContext } from 'react';
-import {ProductCardContainer, ProductImage, Footer, Name, Price, Button } from './product-card.styles';
+import { useDispatch } from 'react-redux';
+import { addCartItem } from '../../store/cart/cart.action';
+import {
+  ProductCardContainer,
+  ProductImage,
+  Footer,
+  Name,
+  Price,
+  Button
+} from './product-card.styles';
 
-import { CartContext } from '../../context/cart.context';
-export default function ProductCard({ product }: {product: PRODUCT_TYPE}) {
+export default function ProductCard({
+  product
+}: {
+  product: PRODUCT_TYPE;
+}) {
   const { name, price, imageUrl } = product;
-  const { addItemToCart } = useContext(CartContext);
+  const dispatch = useDispatch();
 
-  function onItemAdded(){
-    addItemToCart && addItemToCart(product);
+  function onItemAdded() {
+    dispatch(addCartItem(product));
   }
-  return ( 
+  return (
     <ProductCardContainer>
-      <ProductImage src={imageUrl} alt={`${name}`}/>
+      <ProductImage src={imageUrl} alt={`${name}`} />
       <Footer>
         <Name>{name}</Name>
         <Price>{price}</Price>
-        <Button onClick={onItemAdded} buttonType='inverted' type='button'>Add to cart</Button>
+        <Button
+          onClick={onItemAdded}
+          buttonType="inverted"
+          type="button"
+        >
+          Add to cart
+        </Button>
       </Footer>
     </ProductCardContainer>
   );
 }
-

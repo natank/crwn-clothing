@@ -1,26 +1,48 @@
-import { useContext, useEffect, useState } from 'react';
+// @ts-nocheck
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { CategoriesContext } from '../../context/categories.context';
-import ProductCard from '../../components/product-card/product-card.component'
-import { CategoryContainer, Title } from './category.styles';
+import {
+  selectCategoriesMap,
+  selectIsCategoriesAreLoading
+} from '../../store/categories/categories.selector';
+import ProductCard from '../../components/product-card/product-card.component';
+import {
+  CategoryContainer,
+  Title
+} from './category.styles';
+import Spinner from '../../components/spinner/spinner.component';
 
 export default function Category() {
-  const { categoriesMap } = useContext(CategoriesContext);
+  const categoriesMap = useSelector(selectCategoriesMap);
+  const loading = useSelector(selectIsCategoriesAreLoading);
   const { category: title } = useParams();
-  const [products, setProducts]= useState([] as PRODUCT_TYPE[]);
-  
+  const [products, setProducts] = useState(
+    [] as PRODUCT_TYPE[]
+  );
+
   useEffect(() => {
-    title && setProducts(categoriesMap[title]);
-  }, [title, categoriesMap])
+    categoriesMap &&
+      title &&
+      setProducts(categoriesMap[title]);
+  }, [title, categoriesMap]);
 
-
-  return <div className='category'>
-    <Title>{title?.toUpperCase()}</Title>
-    <CategoryContainer>
-      {
-        products && products.map((product)=>(
-          <ProductCard key={product.id} product={product} />
-        ))}
-    </CategoryContainer>
-  </div>
+  return (
+    <div className="category">
+      <Title>{title?.toUpperCase()}</Title>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <CategoryContainer>
+          {products &&
+            products.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+              />
+            ))}
+        </CategoryContainer>
+      )}
+    </div>
+  );
 }
