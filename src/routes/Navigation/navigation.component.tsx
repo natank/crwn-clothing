@@ -15,13 +15,16 @@ import {
 import { selectCurrentUser } from '../../store/user/user.selector';
 import { selectIsCartOpen } from '../../store/cart/cart.selector';
 import { toggleCart } from '../../store/cart/cart.action';
+import { signOutStart } from '../../store/user/user.action';
 
 const Navigation = () => {
   // @ts-ignore
   const currentUser = useSelector(selectCurrentUser);
   const isCartOpen = useSelector(selectIsCartOpen);
   const dispatch = useDispatch();
-
+  const handleSignOut = () => {
+    dispatch(signOutStart());
+  };
   return (
     <Fragment>
       <NavigationContainer>
@@ -33,7 +36,7 @@ const Navigation = () => {
           <>
             {currentUser ? (
               <NavLink to="/auth">
-                <NavLink as="span" onClick={signOutUser}>
+                <NavLink as="span" onClick={handleSignOut}>
                   SIGN OUT
                 </NavLink>
               </NavLink>
