@@ -1,6 +1,9 @@
-// @ts-nocheck
 import { createSelector } from '@reduxjs/toolkit';
-export const selectCartReducer = (state) => {
+import { RootState } from '../store';
+import { CartState } from './cart.reducer';
+export const selectCartReducer = (
+  state: RootState
+): CartState => {
   return state.cart;
 };
 

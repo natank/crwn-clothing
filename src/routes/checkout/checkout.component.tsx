@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import CheckoutItem from '../../components/checkout-item/checkout-item.component';
 import {
   CheckoutContainer,
@@ -11,6 +11,7 @@ import {
   selectCartItems,
   selectCartValue
 } from '../../store/cart/cart.selector';
+import PaymentForm from '../../components/payment-form/payment-form.component';
 export default function Checkout() {
   const cartItems = useSelector(selectCartItems);
   const cartValue = useSelector(selectCartValue);
@@ -41,6 +42,8 @@ export default function Checkout() {
         />
       ))}
       <Total>Total: ${cartValue}</Total>
+
+      <PaymentForm />
     </CheckoutContainer>
   );
 }

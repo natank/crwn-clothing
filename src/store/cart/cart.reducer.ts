@@ -1,82 +1,93 @@
-// @ts-nocheck
-import { CART_ACTION_TYPES } from './cart.types';
+import { AnyAction } from 'redux';
+import {
+  addCartItem,
+  decrementQty,
+  incrementQty,
+  removeCartItem,
+  toggleCart
+} from './cart.action';
 
-const INITIAL_STATE = {
+export type CartState = {
+  isCartOpen: boolean;
+  cartItems: CART_ITEM_TYPE[];
+  cartItemsCount: number;
+};
+
+const INITIAL_STATE: CartState = {
   isCartOpen: false,
-  cartItems: [],
+  cartItems: [] as CART_ITEM_TYPE[],
   cartItemsCount: 0
 };
 
 export function cartReducer(
   state = INITIAL_STATE,
-  action: { type: string; payload: Record<string, unknown> }
-) {
-  const { type, payload } = action;
-  switch (type) {
-    case CART_ACTION_TYPES.TOGGLE_CART:
-      return { ...state, isCartOpen: !state.isCartOpen };
-      break;
-    case CART_ACTION_TYPES.ADD_ITEM:
-      {
-        const { cartItems } = state;
-        const existingCartItem = cartItems.find(
-          (item) => item.id === payload.id
-        );
-        if (!existingCartItem) {
-          const newCartItem = {
-            ...payload,
-            quantity: 1
-          };
-          return {
-            ...state,
-            cartItems: [...state.cartItems, newCartItem],
-            cartItemsCount: state.cartItemsCount + 1
-          };
-        } else {
-          existingCartItem.quantity++;
-          return {
-            ...state,
-            cartItems: [...state.cartItems],
-            cartItemsCount: state.cartItemsCount + 1
-          };
-        }
-      }
-      break;
+  action: AnyAction
+): CartState {
+  if (toggleCart.match(action)) {
+    return { ...state, isCartOpen: !state.isCartOpen };
+  }
+  if (addCartItem.match(action)) {
+    const { payload } = action;
+    const { cartItems } = state;
+    const existingCartItem = cartItems.find(
+      (item) => item.id === payload.id
+    );
+    if (!existingCartItem) {
+      const newCartItem = {
+        ...payload,
+        quantity: 1
+      };
+      return {
+        ...state,
+        cartItems: [...state.cartItems, newCartItem],
+        cartItemsCount: state.cartItemsCount + 1
+      };
+    } else {
+      existingCartItem.quantity++;
+      return {
+        ...state,
+        cartItems: [...state.cartItems],
+        cartItemsCount: state.cartItemsCount + 1
+      };
+    }
+  }
+  if (removeCartItem.match(action)) {
+    const { payload } = action;
+    return {
+      ...state,
+      cartItems: state.cartItems.filter(
+        (item) => item.id !== payload
+      )
+    };
+  }
 
-    case CART_ACTION_TYPES.REMOVE_ITEM:
-      return {
-        ...state,
-        cartItems: state.cartItems.filter(
-          (item) => item.id !== payload
-        )
-      };
-      break;
-    case CART_ACTION_TYPES.INCREMENT_QTY:
-      return {
-        ...state,
-        cartItems: state.cartItems.map((item) => {
-          if (item.id === payload) item.quantity++;
-          return item;
-        })
-      };
-    case CART_ACTION_TYPES.DECREMENT_QTY: {
-      return {
-        ...state,
-        cartItems: state.cartItems.reduce((acc, item) => {
-          if (item.id === payload) {
-            if (item.quantity > 1) {
-              item.quantity--;
-              acc.push(item);
-            }
-          } else {
+  if (incrementQty.match(action)) {
+    const { payload } = action;
+    return {
+      ...state,
+      cartItems: state.cartItems.map((item) => {
+        if (item.id === payload) item.quantity++;
+        return item;
+      })
+    };
+  }
+
+  if (decrementQty.match(action)) {
+    const { payload } = action;
+    return {
+      ...state,
+      cartItems: state.cartItems.reduce((acc, item) => {
+        if (item.id === payload) {
+          if (item.quantity > 1) {
+            item.quantity--;
             acc.push(item);
           }
-          return acc;
-        }, [])
-      };
-      break;
-    }
-    default:
-      return state;
+        } else {
+          acc.push(item);
+        }
+        return acc;
+      }, [] as CART_ITEM_TYPE[])
+    };
   }
+  return state;
 }

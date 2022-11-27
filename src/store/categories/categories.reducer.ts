@@ -1,9 +1,17 @@
-import { CATEGORIES_ACTION_TYPES } from './categories.types';
-const INITIAL_STATE: {
-  categories: unknown[];
-  isLoading: boolean;
-  error: unknown;
-} = {
+import { Category } from './categories.types';
+import {
+  fetchCategoriesFailed,
+  fetchCategoriesStart,
+  fetchCategoriesSuccess
+} from './categories.action';
+import { AnyAction } from 'redux';
+
+export type CategoriesState = {
+  readonly categories: Category[];
+  readonly isLoading: boolean;
+  readonly error: Error | null;
+};
+const INITIAL_STATE: CategoriesState = {
   categories: [],
   isLoading: false,
   error: null
@@ -11,28 +19,29 @@ const INITIAL_STATE: {
 
 export function categoriesReducer(
   state = INITIAL_STATE,
-  action: { type: string; payload: unknown }
-) {
-  const { type, payload } = action;
-  switch (type) {
-    case CATEGORIES_ACTION_TYPES.FETCH_CATEGORIES_START:
-      return {
-        ...state,
-        isLoading: true
-      };
-    case CATEGORIES_ACTION_TYPES.FETCH_CATEGORIES_SUCCESS:
-      return {
-        ...state,
-        categories: payload,
-        isLoading: false
-      };
-    case CATEGORIES_ACTION_TYPES.FETCH_CATEGORIES_FAILED:
-      return {
-        ...state,
-        error: payload,
-        isLoading: false
-      };
-    default:
-      return state;
+  action = {} as AnyAction
+): CategoriesState {
+  if (fetchCategoriesStart.match(action)) {
+    return {
+      ...state,
+      isLoading: true
+    };
   }
+  if (fetchCategoriesSuccess.match(action)) {
+    return {
+      ...state,
+      categories: action.payload,
+      isLoading: false
+    };
+  }
+
+  if (fetchCategoriesFailed.match(action)) {
+    return {
+      ...state,
+      error: action.payload,
+      isLoading: false
+    };
+  }
+
+  return state;
 }

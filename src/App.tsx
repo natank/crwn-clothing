@@ -1,6 +1,5 @@
-// @ts-nocheck
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from './hooks';
 import { Routes, Route } from 'react-router-dom';
 import Navigation from './routes/navigation/navigation.component';
 import Authentication from './routes/authentication/authentication.component';
@@ -13,7 +12,7 @@ import './App.scss';
 import { checkUserSession } from './store/user/user.action';
 
 function App() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(checkUserSession());

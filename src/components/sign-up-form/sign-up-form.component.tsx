@@ -1,13 +1,8 @@
-import React, { useState } from 'react';
-import {
-  createAuthUserWithEmailAndPassword,
-  createUserDocumentFromAuth
-} from '../../utils/firebase/firebase.utils';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import FormInput from '../form-input/form-input.component';
 import Button from '../button/button.component';
 import { SignUpContainer } from './sign-up-form.styles';
 import { useDispatch } from 'react-redux';
-import { USER_ACTION_TYPES } from '../../store/user/user.types';
 import { signUpStart } from '../../store/user/user.action';
 
 const defaultFormFields = {
@@ -28,7 +23,9 @@ function SignUpForm() {
     setFormFields(defaultFormFields);
   };
 
-  const handleSubmit = async (event: React.FormEvent) => {
+  const handleSubmit = async (
+    event: FormEvent<HTMLFormElement>
+  ) => {
     event.preventDefault();
     if (password !== confirmPassword) {
       alert('passwords do not match');
@@ -36,10 +33,10 @@ function SignUpForm() {
     }
 
     resetFormFields();
-    dispatch(signUpStart({ email, password }));
+    dispatch(signUpStart(email, password));
   };
   const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: ChangeEvent<HTMLInputElement>
   ) => {
     const { name, value } = event.target;
     setFormFields({ ...formFields, [name]: value });
